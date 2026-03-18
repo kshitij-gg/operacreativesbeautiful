@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 225 225" width="225" height="225">
+  <rect width="225" height="225" fill="black"/>
+  <path d="M 0 0 L 0 224 L 224 224 L 224 0 Z" fill="black" />
+  <path d="M 73 68 L 78 65 L 86 63 L 138 63 L 144 64 L 149 66 L 157 74 L 160 81 L 160 92 L 157 99 L 153 104 L 152 104 L 147 108 L 142 109 L 158 126 L 160 131 L 161 137 L 159 146 L 157 150 L 150 157 L 144 160 L 136 161 L 129 159 L 124 156 L 109 141 L 109 145 L 105 152 L 99 157 L 92 160 L 82 160 L 73 156 L 67 150 L 64 143 L 64 82 L 66 76 Z" fill="white" />
+  <path d="M 110 109 L 110 122 L 133 145 L 139 146 L 143 144 L 146 139 L 146 135 L 145 133 L 121 109 Z" fill="black" />
+  <path d="M 108 78 L 110 84 L 110 95 L 139 95 L 142 94 L 145 91 L 146 86 L 145 82 L 142 79 L 139 78 Z" fill="black" />
+  <path d="M 85 78 L 81 80 L 79 83 L 79 141 L 80 143 L 83 145 L 91 145 L 95 140 L 95 84 L 91 79 Z" fill="black" />
+</svg>
