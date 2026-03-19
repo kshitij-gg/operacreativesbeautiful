@@ -5,13 +5,17 @@ import AboutSection from '@/components/AboutSection';
 import PortfolioSection from '@/components/PortfolioSection';
 import BehindTheScenesSection from '@/components/BehindTheScenesSection';
 import ToolsSection from '@/components/ToolsSection';
+import LiquidDivider from '@/components/LiquidDivider';
+
+
 import CTASection from '@/components/CTASection';
 import ContactSection from '@/components/ContactSection';
 import Footer from '@/components/Footer';
 import SmoothScroll from '@/components/SmoothScroll';
 import FilmGrain from '@/components/FilmGrain';
-import GradientMesh from '@/components/GradientMesh';
+import FerrofluidBackground from '@/components/FerrofluidBackground';
 import MarqueeBanner from '@/components/MarqueeBanner';
+import SectionCurtain from '@/components/SectionCurtain';
 import { motion, useScroll, useSpring } from 'framer-motion';
 import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
@@ -39,26 +43,23 @@ const Index = () => {
 
   return (
     <SmoothScroll>
-      <div className="min-h-screen bg-background relative">
+      <div className="min-h-screen bg-transparent relative">
+        <FerrofluidBackground />
+        
         {/* ── Global Overlays ── */}
-        {/* Scroll progress bar */}
         <motion.div
           className="fixed top-0 left-0 right-0 h-[1px] bg-accent origin-left z-[9998] rounded-r-full"
           style={{ scaleX, boxShadow: '0 0 8px hsl(var(--accent) / 0.5)' }}
         />
-        {/* Film grain — subtle analog texture */}
         <FilmGrain />
-        {/* Animated gradient mesh — floating cinema-color blobs */}
-        <GradientMesh />
-        {/* Custom cursor with morph states */}
         <CustomCursor />
         <Navbar />
 
         <main className="relative">
           <HeroSection />
 
-          <div className="relative z-10 bg-background rounded-t-3xl shadow-[0_-20px_60px_-15px_rgba(0,0,0,0.3)]">
-            <div className="h-24 bg-gradient-to-b from-transparent via-foreground/[0.02] to-transparent" />
+            <div className="relative z-10 bg-background/80 backdrop-blur-3xl rounded-t-3xl shadow-[0_-20px_60px_-15px_rgba(0,0,0,0.3)]">
+            <LiquidDivider color="accent" />
 
             <MarqueeBanner
               text="AI FILMS ★ COMMERCIALS ★ VISUAL CAMPAIGNS ★ MOTION DESIGN ★ CREATIVE DIRECTION ★ "
@@ -66,9 +67,12 @@ const Index = () => {
               className="border-y border-foreground/5"
             />
 
-            <AboutSection />
+            {/* About Section — wrapped in curtain reveal */}
+            <SectionCurtain>
+              <AboutSection />
+            </SectionCurtain>
 
-            <div className="h-16 bg-gradient-to-b from-transparent via-foreground/[0.015] to-transparent" />
+            <LiquidDivider color="purple" />
 
             <MarqueeBanner
               text="CONCEPT ★ STORYBOARD ★ AI PRODUCTION ★ POST-PRODUCTION ★ VFX ★ COLOR GRADING ★ "
@@ -77,24 +81,29 @@ const Index = () => {
               className="border-y border-foreground/5 opacity-50"
             />
 
+
+
             <PortfolioSection />
 
-            <div className="h-16 bg-gradient-to-b from-transparent via-foreground/[0.02] to-transparent" />
+            <LiquidDivider color="cyan" />
 
-            <BehindTheScenesSection />
+            {/* BTS Section — wrapped in curtain reveal */}
+            <SectionCurtain>
+              <BehindTheScenesSection />
+            </SectionCurtain>
+
             <ToolsSection />
 
-            <div className="h-16 bg-gradient-to-b from-transparent via-foreground/[0.015] to-transparent" />
+            <LiquidDivider color="purple" />
 
             <CTASection />
 
-            <div className="h-16 bg-gradient-to-b from-transparent via-foreground/[0.02] to-transparent" />
+            <LiquidDivider color="accent" />
 
             <ContactSection />
           </div>
         </main>
 
-        {/* Standard Flow Footer */}
         <Footer />
       </div>
     </SmoothScroll>

@@ -1,13 +1,24 @@
 import { Routes, Route, useLocation } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
+import { useEffect } from "react";
 import Index from "@/pages/Index";
 import MoreWork from "@/pages/MoreWork";
 import NotFound from "@/pages/NotFound";
+import FilmReelTransition from "./FilmReelTransition";
 
 const AnimatedRoutes = () => {
     const location = useLocation();
 
+    // Scroll to top on route change unless handling a specific anchor scroll
+    useEffect(() => {
+        if (!location.state?.scrollTo) {
+            window.scrollTo(0, 0);
+        }
+    }, [location.pathname, location.state]);
+
     return (
+        <>
+            <FilmReelTransition />
         <AnimatePresence mode="wait">
             <Routes location={location} key={location.pathname}>
                 <Route
@@ -51,6 +62,7 @@ const AnimatedRoutes = () => {
                 />
             </Routes>
         </AnimatePresence>
+        </>
     );
 };
 

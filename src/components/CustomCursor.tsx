@@ -1,16 +1,6 @@
 import { useEffect, useRef, useState, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-/**
- * CustomCursor — an advanced custom cursor with multiple morph states:
- * - Default: small dot with trailing ring
- * - Hover: expands ring with "VIEW" text
- * - Link: arrow indicator
- * - Media: play icon
- * 
- * Think of it like a mood ring that changes based on what you're pointing at.
- */
-
 type CursorState = 'default' | 'hover' | 'link' | 'media';
 
 const CustomCursor = () => {
@@ -24,15 +14,15 @@ const CustomCursor = () => {
     if (!target) return;
     const el = target as HTMLElement;
 
+    let newState: CursorState = 'default';
     if (el.closest('[data-cursor-media]') || el.closest('video') || el.closest('.aspect-video')) {
-      setCursorState('media');
+      newState = 'media';
     } else if (el.closest('[data-cursor-hover]') || el.closest('a') || el.closest('button')) {
-      setCursorState('hover');
+      newState = 'hover';
     } else if (el.closest('[data-cursor-link]')) {
-      setCursorState('link');
-    } else {
-      setCursorState('default');
+      newState = 'link';
     }
+    setCursorState(newState);
   }, []);
 
   useEffect(() => {
@@ -40,13 +30,12 @@ const CustomCursor = () => {
       targetPosition.current = { x: e.clientX, y: e.clientY };
       updateCursorState(document.elementFromPoint(e.clientX, e.clientY));
     };
-
     window.addEventListener('mousemove', handleMouseMove);
 
     let animationId: number;
+
     const animate = () => {
       const dotLerp = 0.2;
-      const ringLerp = 0.08;
       position.current.x += (targetPosition.current.x - position.current.x) * dotLerp;
       position.current.y += (targetPosition.current.y - position.current.y) * dotLerp;
 

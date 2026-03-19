@@ -61,6 +61,18 @@ const Preloader = () => {
                         <p className="mt-4 font-mono text-[10px] tracking-[0.3em] uppercase text-white/40">
                             Initializing AI Core
                         </p>
+                        
+                        {/* Desktop Preferred Badge */}
+                        <motion.div
+                            className="mt-8 border border-accent/40 bg-accent/5 px-6 py-3 rounded-sm backdrop-blur-md"
+                            initial={{ opacity: 0, scale: 0.9 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            transition={{ delay: 0.5, duration: 0.8 }}
+                        >
+                            <span className="font-mono text-xs sm:text-sm tracking-[0.5em] text-accent font-bold uppercase block text-center">
+                                Desktop Preferred
+                            </span>
+                        </motion.div>
                     </div>
 
                     {/* Bottom status text (random tech jargon) */}

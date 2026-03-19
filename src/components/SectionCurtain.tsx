@@ -1,51 +1,52 @@
-import { useRef, type ReactNode } from 'react';
-import { motion, useInView } from 'framer-motion';
+import { useRef } from 'react';
+import { motion, useScroll, useTransform } from 'framer-motion';
 
 /**
- * SectionCurtain — a cinematic curtain overlay that wipes away 
- * to reveal content as it scrolls into view. Like a camera iris
- * opening on a new scene.
+ * SectionCurtain — A theater-curtain reveal between major sections.
+ *
+ * As the user scrolls past this component, a solid-colored curtain
+ * slides upward to reveal the content beneath. Creates a dramatic
+ * "act change" between sections of the page.
  */
 
 interface SectionCurtainProps {
-    children: ReactNode;
-    direction?: 'up' | 'down' | 'left' | 'right';
+    children: React.ReactNode;
     color?: string;
-    duration?: number;
     className?: string;
 }
 
-const SectionCurtain = ({
-    children,
-    direction = 'up',
-    color = 'hsl(var(--accent))',
-    duration = 1,
-    className = '',
-}: SectionCurtainProps) => {
-    const ref = useRef(null);
-    const isInView = useInView(ref, { once: true, margin: '-15% 0px' });
+const SectionCurtain = ({ children, color = 'bg-background', className = '' }: SectionCurtainProps) => {
+    const ref = useRef<HTMLDivElement>(null);
+    const { scrollYProgress } = useScroll({
+        target: ref,
+        offset: ['start end', 'start 0.4'],
+    });
 
-    const directionMap = {
-        up: { initial: { y: '0%' }, animate: { y: '-100%' } },
-        down: { initial: { y: '0%' }, animate: { y: '100%' } },
-        left: { initial: { x: '0%' }, animate: { x: '-100%' } },
-        right: { initial: { x: '0%' }, animate: { x: '100%' } },
-    };
-
-    const variants = directionMap[direction];
+    // Curtain slides up from covering everything to revealing everything
+    const curtainY = useTransform(scrollYProgress, [0, 1], ['0%', '-100%']);
+    const contentOpacity = useTransform(scrollYProgress, [0.3, 0.8], [0, 1]);
+    const contentY = useTransform(scrollYProgress, [0.3, 0.8], [40, 0]);
 
     return (
         <div ref={ref} className={`relative overflow-hidden ${className}`}>
-            {children}
+            {/* The content underneath */}
+            <motion.div style={{ opacity: contentOpacity, y: contentY }}>
+                {children}
+            </motion.div>
+
+            {/* The curtain overlay */}
             <motion.div
-                className="absolute inset-0 z-20 pointer-events-none"
-                style={{ backgroundColor: color }}
-                initial={variants.initial}
-                animate={isInView ? variants.animate : variants.initial}
-                transition={{
-                    duration: duration,
-                    ease: [0.65, 0, 0.35, 1],
-                    delay: 0.1,
+                className={`absolute inset-0 ${color} z-20 pointer-events-none`}
+                style={{ y: curtainY }}
+            />
+
+            {/* Subtle edge glow at the bottom of the curtain */}
+            <motion.div
+                className="absolute left-0 right-0 h-[2px] bg-accent/20 z-30 pointer-events-none"
+                style={{
+                    bottom: 0,
+                    y: curtainY,
+                    opacity: useTransform(scrollYProgress, [0, 0.5, 1], [0, 1, 0]),
                 }}
             />
         </div>

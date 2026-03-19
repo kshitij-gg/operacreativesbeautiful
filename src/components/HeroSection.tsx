@@ -1,26 +1,56 @@
 import heroBg from '@/assets/hero-bg.jpg';
+import showreelVideo from '@/assets/videos/From KlickPin CF Animated Website UI [Video] _ Interactive web design Webpage design Portfolio web design.mp4';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { useRef, useState } from 'react';
 import LogoSignature from '@/components/LogoSignature';
 import TypewriterText from '@/components/TypewriterText';
-import { ChevronDown, Play } from 'lucide-react';
+import GenerativeBackground from '@/components/GenerativeBackground';
+import { ChevronDown } from 'lucide-react';
 
 const HeroSection = () => {
   const ref = useRef(null);
-  const [showReel, setShowReel] = useState(false);
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start start", "end start"],
   });
 
-  // Parallax: image scales up and fades as you scroll
-  const bgScale = useTransform(scrollYProgress, [0, 1], [1, 1.15]);
+  // ── Multi-Layer Parallax (3 depth layers) ──
+  // Layer 1 (background image): moves slowest + zooms OUT as you scroll
+  const bgScale = useTransform(scrollYProgress, [0, 1], [1.2, 1]); // zoom-out effect
+  const bgY = useTransform(scrollYProgress, [0, 1], ['0%', '30%']); // slowest parallax
   const bgOpacity = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
 
-  // Aperture clip-path effect — circle expands on scroll
+  // Layer 2 (middle content): moves at medium speed
+  const contentY = useTransform(scrollYProgress, [0, 1], ['0%', '15%']);
+
+  // Layer 3 (foreground decorative elements): moves fastest
+  const fgY = useTransform(scrollYProgress, [0, 1], ['0%', '-10%']);
+  const fgOpacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
+
+  // Aperture clip-path effect
   const clipProgress = useTransform(scrollYProgress, [0, 0.15], [0, 1]);
 
-  // Split text for staggered line reveal — H1: accent on last line
+  // ── Shatter Scroll Physics ──
+  // Lines detach and fall apart in different directions when you scroll past 20%
+  const shatterY1 = useTransform(scrollYProgress, [0, 0.2, 1], [0, 0, 600]);
+  const shatterX1 = useTransform(scrollYProgress, [0, 0.2, 1], [0, 0, -200]);
+  const shatterR1 = useTransform(scrollYProgress, [0, 0.2, 1], [0, 0, -35]);
+
+  const shatterY2 = useTransform(scrollYProgress, [0, 0.2, 1], [0, 0, 800]);
+  const shatterX2 = useTransform(scrollYProgress, [0, 0.2, 1], [0, 0, 100]);
+  const shatterR2 = useTransform(scrollYProgress, [0, 0.2, 1], [0, 0, 25]);
+
+  const shatterY3 = useTransform(scrollYProgress, [0, 0.2, 1], [0, 0, 1000]);
+  const shatterX3 = useTransform(scrollYProgress, [0, 0.2, 1], [0, 0, 400]);
+  const shatterR3 = useTransform(scrollYProgress, [0, 0.2, 1], [0, 0, 45]);
+
+  const shatterTransforms = [
+    { y: shatterY1, x: shatterX1, rotateZ: shatterR1 },
+    { y: shatterY2, x: shatterX2, rotateZ: shatterR2 },
+    { y: shatterY3, x: shatterX3, rotateZ: shatterR3 },
+  ];
+
+  // Title with staggered line reveal
   const titleLines = [
     { text: "AI FILM", accent: false },
     { text: "PRODUCTION", accent: false },
@@ -50,38 +80,73 @@ const HeroSection = () => {
 
   return (
     <div ref={ref} className="h-screen relative" style={{ zIndex: 0 }}>
-      {/* Background Section with parallax zoom */}
+      {/* Background Section with multi-layer parallax */}
       <motion.section
         className="fixed inset-0 h-screen w-full overflow-hidden"
         style={{ zIndex: 0, opacity: bgOpacity }}
       >
-        {/* Background Image — parallax scale */}
-        <motion.div className="absolute inset-0" style={{ scale: bgScale }}>
-          <img
-            src={heroBg}
-            alt=""
+        {/* Layer 1: Background Image — slowest parallax + zoom-out */}
+        <motion.div
+          className="absolute inset-0"
+          style={{ scale: bgScale, y: bgY }}
+        >
+          <GenerativeBackground
+            videoSrc={showreelVideo}
+            posterSrc={heroBg}
             className="w-full h-full object-cover"
-            data-cursor-media
           />
           {/* Gradient overlays */}
           <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
           <div className="absolute inset-0 bg-gradient-to-r from-black/30 to-transparent" />
         </motion.div>
 
-        {/* H3: Vignette pulse overlay */}
+        {/* Layer 3: Foreground decorative elements — fastest parallax */}
+        <motion.div
+          className="absolute inset-0 pointer-events-none z-5"
+          style={{ y: fgY, opacity: fgOpacity }}
+        >
+          {/* Floating decorative lines */}
+          <div className="absolute top-[15%] right-[10%] w-24 h-[1px] bg-white/10 rotate-45" />
+          <div className="absolute top-[25%] right-[15%] w-16 h-[1px] bg-accent/15 rotate-12" />
+          <div className="absolute bottom-[30%] left-[8%] w-20 h-[1px] bg-white/8 -rotate-30" />
+          {/* Floating dots */}
+          <motion.div
+            className="absolute top-[20%] left-[15%] w-2 h-2 rounded-full bg-accent/20"
+            animate={{ y: [0, -10, 0], opacity: [0.2, 0.5, 0.2] }}
+            transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
+          />
+          <motion.div
+            className="absolute top-[40%] right-[20%] w-1.5 h-1.5 rounded-full bg-white/15"
+            animate={{ y: [0, 8, 0], opacity: [0.15, 0.4, 0.15] }}
+            transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut', delay: 1 }}
+          />
+          {/* Subtle grid overlay */}
+          <div
+            className="absolute inset-0 opacity-[0.02]"
+            style={{
+              backgroundImage: 'linear-gradient(to right, white 1px, transparent 1px), linear-gradient(to bottom, white 1px, transparent 1px)',
+              backgroundSize: '80px 80px',
+            }}
+          />
+        </motion.div>
+
+        {/* Vignette pulse overlay */}
         <div
           className="absolute inset-0 pointer-events-none"
           style={{ animation: 'vignette-pulse 10s ease-in-out infinite' }}
         />
 
-        {/* Content */}
-        <div className="relative z-10 h-full container mx-auto px-4 sm:px-6 lg:px-12 flex flex-col justify-end pb-12 sm:pb-16 lg:pb-24">
-          {/* Logo Signature Animation */}
+        {/* Layer 2: Content — medium speed parallax */}
+        <motion.div
+          className="relative z-10 h-full container mx-auto px-4 sm:px-6 lg:px-12 flex flex-col justify-end pb-12 sm:pb-16 lg:pb-24 pointer-events-none"
+          style={{ y: contentY }}
+        >
+          {/* Logo Signature */}
           <div className="mb-6 sm:mb-8 max-w-[200px] sm:max-w-[300px] opacity-50">
             <LogoSignature />
           </div>
 
-          {/* H1: Title with accent on last line */}
+          {/* Title with staggered line reveal and shatter scroll physics */}
           <motion.h1
             variants={containerVars}
             initial="hidden"
@@ -89,18 +154,26 @@ const HeroSection = () => {
             className="font-heading text-[2.5rem] sm:text-5xl md:text-6xl lg:text-7xl text-white max-w-2xl leading-[0.95] uppercase tracking-tight"
           >
             {titleLines.map((line, i) => (
-              <span key={i} className="block overflow-hidden">
+              <motion.span 
+                key={i} 
+                className="block overflow-visible"
+                style={{ 
+                  y: shatterTransforms[i].y, 
+                  x: shatterTransforms[i].x, 
+                  rotateZ: shatterTransforms[i].rotateZ 
+                }}
+              >
                 <motion.span
                   variants={lineVars}
                   className={`block ${line.accent ? 'text-accent italic' : ''}`}
                 >
                   {line.text}
                 </motion.span>
-              </span>
+              </motion.span>
             ))}
           </motion.h1>
 
-          {/* Tagline — updated copy */}
+          {/* Tagline */}
           <motion.p
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -111,26 +184,9 @@ const HeroSection = () => {
               Where AI meets cinema. Every frame, engineered.
             </TypewriterText>
           </motion.p>
+        </motion.div>
 
-          {/* H4: Showreel play button */}
-          <motion.button
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 3.2, duration: 0.6, ease: 'easeOut' }}
-            onClick={() => setShowReel(true)}
-            className="mt-6 sm:mt-8 group flex items-center gap-3 w-fit"
-            data-cursor-hover
-          >
-            <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-full border-2 border-white/40 flex items-center justify-center group-hover:border-accent group-hover:bg-accent/10 transition-all duration-300">
-              <Play size={18} className="text-white ml-0.5 group-hover:text-accent transition-colors" />
-            </div>
-            <span className="font-mono text-xs tracking-[0.2em] text-white/60 uppercase group-hover:text-white transition-colors">
-              Watch Showreel
-            </span>
-          </motion.button>
-        </div>
-
-        {/* H2: Scroll down indicator */}
+        {/* Scroll down indicator */}
         <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-1">
           <span className="font-mono text-[9px] tracking-[0.3em] text-white/40 uppercase">Scroll</span>
           <ChevronDown
@@ -140,24 +196,6 @@ const HeroSection = () => {
           />
         </div>
       </motion.section>
-
-      {/* Showreel fullscreen overlay (placeholder) */}
-      {showReel && (
-        <motion.div
-          className="fixed inset-0 z-[9999] bg-black/95 flex items-center justify-center cursor-pointer"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          onClick={() => setShowReel(false)}
-        >
-          <div className="text-center">
-            <div className="w-24 h-24 rounded-full border-2 border-accent flex items-center justify-center mx-auto mb-6">
-              <Play size={36} className="text-accent ml-1" />
-            </div>
-            <p className="text-white/60 font-mono text-sm">Showreel coming soon</p>
-            <p className="text-white/30 font-mono text-xs mt-2">Click anywhere to close</p>
-          </div>
-        </motion.div>
-      )}
     </div>
   );
 };

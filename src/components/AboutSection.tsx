@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { motion, useInView, useAnimation, useMotionValue, useSpring } from 'framer-motion';
+import TextReveal from '@/components/TextReveal';
 
 interface StatProps {
   value: number;
@@ -122,13 +123,14 @@ const AboutSection = () => {
               WHO WE ARE
             </motion.span>
 
-            {/* Updated copy */}
-            <motion.h2
-              variants={itemVariants}
+            {/* Updated copy — staggered line-by-line masked reveal */}
+            <TextReveal
               className="mt-4 sm:mt-6 font-heading text-2xl sm:text-3xl md:text-4xl lg:text-5xl text-foreground leading-tight"
+              delay={0.3}
             >
-              The future of film is AI. We're already there.
-            </motion.h2>
+              The future of film is AI.
+              We're already there.
+            </TextReveal>
 
             {/* A2: Staggered line-by-line text reveal */}
             <div className="mt-5 sm:mt-8">
