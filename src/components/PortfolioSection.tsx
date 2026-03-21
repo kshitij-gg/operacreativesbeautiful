@@ -1,5 +1,5 @@
 import { useRef, useState, useEffect, useCallback } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
 import { motion, useScroll, useTransform, useMotionValue, useSpring } from 'framer-motion';
 import ReelCounter from '@/components/ReelCounter';
@@ -18,6 +18,7 @@ const projects = [
 ];
 
 const PortfolioSection = () => {
+  const navigate = useNavigate();
   const sectionRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
   const [scrollRange, setScrollRange] = useState(0);
@@ -62,29 +63,29 @@ const PortfolioSection = () => {
 
         {/* Parallaxed Header */}
         <motion.div
-           style={{ y: headerY, opacity: headerOpacity }}
-           className="absolute top-[12vh] sm:top-[15vh] left-0 right-0 container mx-auto px-4 sm:px-6 lg:px-12 z-20 pointer-events-auto flex items-end justify-between"
-         >
-           <div>
-             <span className="font-mono text-xs sm:text-sm tracking-[0.2em] text-accent uppercase">
-               OUR WORK
-             </span>
-             <h2 className="mt-2 sm:mt-4 font-heading text-4xl sm:text-5xl md:text-6xl lg:text-7xl text-foreground">
-               Selected Projects.
-             </h2>
-           </div>
+          style={{ y: headerY, opacity: headerOpacity }}
+          className="absolute top-[12vh] sm:top-[15vh] left-0 right-0 container mx-auto px-4 sm:px-6 lg:px-12 z-20 pointer-events-auto flex items-end justify-between"
+        >
+          <div>
+            <span className="font-mono text-xs sm:text-sm tracking-[0.2em] text-accent uppercase">
+              OUR WORK
+            </span>
+            <h2 className="mt-2 sm:mt-4 font-heading text-4xl sm:text-5xl md:text-6xl lg:text-7xl text-foreground">
+              Selected Projects.
+            </h2>
+          </div>
 
         </motion.div>
 
         {/* Horizontal Track */}
         <motion.div
           ref={trackRef}
-            style={{ x }}
-            className="flex gap-6 sm:gap-10 md:gap-12 pl-[5vw] pr-[5vw] items-end pb-[12vh] will-change-transform"
-          >
-            {projects.map((project, index) => {
-              const cardStart = index / (projects.length + 1);
-              const cardEnd = (index + 1) / (projects.length + 1);
+          style={{ x }}
+          className="flex gap-6 sm:gap-10 md:gap-12 pl-[5vw] pr-[5vw] items-end pb-[12vh] will-change-transform"
+        >
+          {projects.map((project, index) => {
+            const cardStart = index / (projects.length + 1);
+            const cardEnd = (index + 1) / (projects.length + 1);
 
             return (
               <Gallery3DCard
@@ -99,32 +100,31 @@ const PortfolioSection = () => {
             );
           })}
 
-            {/* End Card — View All Masterpieces */}
-            <div className="w-[80vw] sm:w-[60vw] md:w-[50vw] flex-shrink-0 flex items-center justify-center px-4 pr-[20vw]">
-              <MagneticButton strength={35}>
-                <Link
-                  to="/more-work"
-                  data-cursor-hover
-                  className="group relative flex flex-col items-center justify-center text-center p-10 sm:p-12 rounded-[2rem] overflow-hidden transition-all duration-500"
-                >
-                  <div className="absolute inset-0 bg-gradient-to-br from-foreground/5 via-accent/5 to-foreground/5 group-hover:from-accent/10 group-hover:via-foreground/10 group-hover:to-accent/10 transition-all duration-700" />
-                  <div className="absolute inset-0 border border-foreground/10 group-hover:border-accent/30 rounded-[2rem] transition-colors duration-500" />
+          {/* End Card — View All Masterpieces */}
+          <div
+            onClick={() => navigate('/more-work')}
+            data-cursor-hover
+            className="flex-shrink-0 relative group flex flex-col items-center justify-center text-center rounded-[2rem] overflow-hidden transition-all duration-500 bg-[#0A0A0A] border border-accent/40 hover:border-accent/80 shadow-[0_0_40px_hsl(var(--accent)/0.15)] hover:shadow-[0_0_60px_hsl(var(--accent)/0.3)] mx-4 sm:mx-8 mr-[15vw] cursor-pointer"
+            style={{ width: 'clamp(320px, 40vw, 800px)', height: 'clamp(180px, 22.5vw, 450px)' }}
+          >
+            {/* Premium Inner Shadow Vignette */}
+            <div
+              className="absolute inset-0 pointer-events-none z-0 shadow-[inset_0_0_60px_rgba(0,0,0,0.8)] sm:shadow-[inset_0_0_120px_rgba(0,0,0,0.9)] transition-shadow duration-500 group-hover:shadow-[inset_0_0_80px_rgba(0,0,0,0.8)]"
+            />
 
-                  <div className="relative z-10">
-                    <div className="w-20 h-20 rounded-full bg-accent flex items-center justify-center mb-6 group-hover:scale-110 group-hover:shadow-[0_0_40px_hsl(var(--accent)/0.5)] transition-all duration-500">
-                      <ArrowRight className="w-7 h-7 sm:w-9 sm:h-9 text-white group-hover:translate-x-1 transition-transform duration-500" />
-                    </div>
-                    <h3 className="font-heading text-xl sm:text-2xl md:text-3xl text-foreground leading-tight group-hover:text-accent transition-colors duration-500">
-                      View All<br />Masterpieces
-                    </h3>
-                    <p className="mt-3 font-mono text-[10px] tracking-[0.2em] text-muted-foreground uppercase">
-                      {projects.length}+ projects
-                    </p>
-                  </div>
-                </Link>
-              </MagneticButton>
+            {/* Delicate Ambient Orange Internal Glow */}
+            <div className="absolute inset-0 pointer-events-none bg-gradient-to-br from-accent/5 via-transparent to-accent/5 opacity-60 z-0 group-hover:from-accent/10 group-hover:to-accent/10 transition-colors duration-700" />
+
+            <div className="relative z-10 flex flex-col items-center gap-6 pointer-events-none">
+              <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-accent flex items-center justify-center group-hover:scale-110 group-hover:shadow-[0_0_40px_hsl(var(--accent)/0.6)] transition-all duration-500">
+                <ArrowRight className="w-6 h-6 sm:w-8 sm:h-8 text-white group-hover:translate-x-1 transition-transform duration-500" />
+              </div>
+              <h3 className="font-heading text-lg sm:text-2xl md:text-3xl text-white leading-snug group-hover:text-accent transition-colors duration-500">
+                View All<br />Masterpieces
+              </h3>
             </div>
-          </motion.div>
+          </div>
+        </motion.div>
       </div>
     </section>
   );

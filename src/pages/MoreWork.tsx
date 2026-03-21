@@ -38,6 +38,10 @@ const verticalWorks = [
 
 const categories = ['All', 'AI Film', 'AI Commercial', 'Visual Campaign'] as const;
 
+// Module-level one-shot flags — persist through tab switches, reset on page refresh
+let horizontalAnimationDone = false;
+let verticalAnimationDone = false;
+
 /* ─── Ken Burns keyframes (injected once) ─── */
 const kenBurnsCSS = `
 @keyframes kenBurns {
@@ -118,8 +122,8 @@ const ProjectBlock = ({
   // Delay cards until after vortex overlay finishes
   const vortexDelay = 3.8;
 
-  // If already animated once, skip the big entry and just show the card
-  const shouldAnimate = !hasAnimated.current;
+  // If already animated once (module-level), skip the big entry
+  const shouldAnimate = !horizontalAnimationDone;
 
   return (
     <motion.div
@@ -245,13 +249,20 @@ const ProjectBlock = ({
 const VerticalProjectBlock = ({
   work,
   onClick,
+  index = 0,
+  total = 8,
 }: {
   work: (typeof verticalWorks)[0];
   onClick: () => void;
+  index?: number;
+  total?: number;
 }) => {
   const blockRef = useRef<HTMLDivElement>(null);
   const [isHovered, setIsHovered] = useState(false);
   const isInView = useInView(blockRef, { once: true, margin: '-40px' });
+
+  const shouldAnimateVertical = !verticalAnimationDone;
+  const delay = shouldAnimateVertical ? (total - index - 1) * 0.12 : 0;
 
   return (
     <motion.div
@@ -263,9 +274,12 @@ const VerticalProjectBlock = ({
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       onClick={onClick}
-      initial={{ opacity: 0, y: 40 }}
-      animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
-      transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+      initial={shouldAnimateVertical ? { opacity: 0, y: -900, scale: 0.9 } : { opacity: 1, y: 0, scale: 1 }}
+      animate={{ opacity: 1, y: 0, scale: 1 }}
+      transition={shouldAnimateVertical ? { 
+        y: { type: "spring", stiffness: 100, damping: 14, mass: 1.2, delay: delay },
+        opacity: { duration: 0.6, delay: delay }
+      } : { duration: 0 }}
     >
       <motion.div className="w-full h-full relative overflow-hidden">
         <GlitchImage
@@ -505,18 +519,26 @@ const GalleryCard = ({
 };
 
 /* ─── 3D Vortex Ring Overlay ─── */
-const VortexRing = ({ works }: { works: (typeof horizontalWorks) }) => {
-  const [showVortex, setShowVortex] = useState(true);
+const VortexRing = ({ works, onDone }: { works: (typeof horizontalWorks); onDone: () => void }) => {
+  const shouldShow = !horizontalAnimationDone;
+  const [showVortex, setShowVortex] = useState(shouldShow);
   const total = works.length;
   const radius = 450; // px - cylinder radius
 
   useEffect(() => {
+    if (!shouldShow) {
+      onDone();
+      return;
+    }
+    // Mark as done IMMEDIATELY so tab-switching never re-triggers it
+    horizontalAnimationDone = true;
     // Lock scrolling and force to top while vortex plays
     window.scrollTo({ top: 0, behavior: 'instant' as ScrollBehavior });
     document.body.style.overflow = 'hidden';
     const timer = setTimeout(() => {
       setShowVortex(false);
       document.body.style.overflow = '';
+      onDone();
     }, 3800);
     return () => {
       clearTimeout(timer);
@@ -601,6 +623,8 @@ const MoreWork = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [activeFormat, setActiveFormat] = useState<'horizontal' | 'vertical'>('horizontal');
   const [expandedProject, setExpandedProject] = useState<(typeof horizontalWorks)[0] | (typeof verticalWorks)[0] | null>(null);
+  // True once the vortex overlay exits — gates horizontal grid visibility
+  const [vortexDone, setVortexDone] = useState(horizontalAnimationDone);
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'instant' as ScrollBehavior });
@@ -705,10 +729,13 @@ const MoreWork = () => {
                   className="w-full relative"
                 >
                   {/* ── Phase 1: Full-screen 3D Vortex Ring Overlay ── */}
-                  <VortexRing works={horizontalWorks} />
+                  <VortexRing works={horizontalWorks} onDone={() => setVortexDone(true)} />
 
-                  {/* ── Phase 2: Normal Grid (cards fly in from ring positions) ── */}
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5 px-4 md:px-8 w-full pb-20" style={{ perspective: '1200px' }}>
+                  {/* ── Phase 2: Normal Grid — hidden until vortex exits ── */}
+                  <div
+                    className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5 px-4 md:px-8 w-full pb-20"
+                    style={{ perspective: '1200px', visibility: vortexDone ? 'visible' : 'hidden' }}
+                  >
                     {horizontalWorks.map((item, idx) => (
                       <ProjectBlock
                         key={item.id}
@@ -728,11 +755,14 @@ const MoreWork = () => {
                   exit={{ opacity: 0, y: -20 }}
                   transition={{ duration: 0.5 }}
                   className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 md:gap-8 px-4 sm:px-8 md:px-12 w-full pb-20"
+                  ref={(el) => { if (el && !verticalAnimationDone) { verticalAnimationDone = true; } }}
                 >
-                  {verticalWorks.map((item) => (
+                  {verticalWorks.map((item, index) => (
                     <VerticalProjectBlock
                       key={item.id}
                       work={item}
+                      index={index}
+                      total={verticalWorks.length}
                       onClick={() => setExpandedProject(item)}
                     />
                   ))}

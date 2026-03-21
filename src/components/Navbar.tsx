@@ -91,26 +91,10 @@ const Navbar = () => {
             </MagneticButton>
             <MagneticButton strength={15}>
               <button
-                onClick={() => goToSection('services')}
-                className="text-[15px] font-medium opacity-80 hover:opacity-100 transition-opacity uppercase tracking-[0.18em] py-2"
-              >
-                Services
-              </button>
-            </MagneticButton>
-            <MagneticButton strength={15}>
-              <button
                 onClick={() => goToSection('portfolio')}
                 className="text-[15px] font-medium opacity-80 hover:opacity-100 transition-opacity uppercase tracking-[0.18em] py-2"
               >
                 Work
-              </button>
-            </MagneticButton>
-            <MagneticButton strength={15}>
-              <button
-                onClick={() => goToSection('tools')}
-                className="text-[15px] font-medium opacity-80 hover:opacity-100 transition-opacity uppercase tracking-[0.18em] py-2"
-              >
-                Tools
               </button>
             </MagneticButton>
           </div>
@@ -148,22 +132,10 @@ const Navbar = () => {
                 About
               </button>
               <button
-                onClick={() => goToSection('services')}
-                className="text-left text-sm font-medium text-foreground/80 hover:text-foreground transition-colors uppercase tracking-[0.12em] py-1"
-              >
-                Services
-              </button>
-              <button
                 onClick={() => goToSection('portfolio')}
                 className="text-left text-sm font-medium text-foreground/80 hover:text-foreground transition-colors uppercase tracking-[0.12em] py-1"
               >
                 Work
-              </button>
-              <button
-                onClick={() => goToSection('tools')}
-                className="text-left text-sm font-medium text-foreground/80 hover:text-foreground transition-colors uppercase tracking-[0.12em] py-1"
-              >
-                Tools
               </button>
               <Button
                 onClick={() => goToSection('contact')}

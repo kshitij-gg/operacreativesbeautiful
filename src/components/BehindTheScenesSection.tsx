@@ -174,7 +174,7 @@ const BehindTheScenesSection = () => {
                     >
                       {/* Node dot */}
                       <div className={`relative z-10 flex items-center justify-center w-[14px] h-[14px] rounded-full border-2 transition-all duration-500 ${isActive ? 'border-accent bg-accent scale-125 shadow-[0_0_12px_hsl(var(--accent)/0.5)]'
-                          : isPast ? 'border-accent/60 bg-accent/40' : 'border-border bg-background'
+                        : isPast ? 'border-accent/60 bg-accent/40' : 'border-border bg-background'
                         }`}>
                         {isActive && (
                           <motion.div

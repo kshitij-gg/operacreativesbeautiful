@@ -158,25 +158,9 @@ const CTASection = () => {
           Your vision + our AI craft — let's bring it to life.
         </motion.p>
 
-        {/* ── 5. STATS TICKER — Animated numbers that count up ── */}
-        <motion.div
-          className="mt-10 sm:mt-12 flex items-center justify-center gap-6 sm:gap-10"
-          initial={{ opacity: 0, y: 20 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.7, delay: 0.35 }}
-        >
-          <StatBlock value={50} suffix="+" label="Projects Delivered" />
-          <div className="w-px h-10 bg-foreground/10" />
-          <StatBlock value={10} suffix="M+" label="Views Generated" />
-          <div className="w-px h-10 bg-foreground/10 hidden sm:block" />
-          <div className="hidden sm:block">
-            <StatBlock value={98} suffix="%" label="Client Retention" />
-          </div>
-        </motion.div>
-
         {/* CTA Button */}
         <motion.div
-          className="mt-10 sm:mt-14"
+          className="mt-8 sm:mt-10"
           initial={{ opacity: 0, scale: 0 }}
           animate={isInView ? { opacity: 1, scale: 1 } : {}}
           transition={{ type: 'spring', stiffness: 200, damping: 15, delay: 0.45 }}
@@ -193,35 +177,6 @@ const CTASection = () => {
         </motion.div>
       </div>
     </section>
-  );
-};
-
-/* ─── Animated Stat Counter ─── */
-const StatBlock = ({ value, suffix, label }: { value: number; suffix: string; label: string }) => {
-  const ref = useRef<HTMLDivElement>(null);
-  const isInView = useInView(ref, { once: true });
-  const [count, setCount] = useState(0);
-
-  // Count-up animation
-  useRef<ReturnType<typeof setInterval> | null>(null);
-  if (isInView && count < value) {
-    setTimeout(() => {
-      setCount((prev) => {
-        const step = Math.ceil(value / 30);
-        return Math.min(prev + step, value);
-      });
-    }, 40);
-  }
-
-  return (
-    <div ref={ref} className="text-center">
-      <span className="font-heading text-2xl sm:text-3xl md:text-4xl text-foreground">
-        {isInView ? count : 0}{suffix}
-      </span>
-      <p className="font-mono text-[10px] sm:text-xs tracking-wider text-muted-foreground uppercase mt-1">
-        {label}
-      </p>
-    </div>
   );
 };
 

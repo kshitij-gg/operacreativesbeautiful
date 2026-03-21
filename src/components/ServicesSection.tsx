@@ -71,8 +71,8 @@ const ServiceRow = ({ service, index }: { service: typeof services[0]; index: nu
           <div className="flex items-center gap-5 md:gap-6">
             <div
               className={`p-3 rounded-lg transition-all duration-300 ${isActive
-                  ? 'bg-accent text-white shadow-[0_0_20px_hsl(var(--accent)/0.3)]'
-                  : 'bg-muted text-muted-foreground'
+                ? 'bg-accent text-white shadow-[0_0_20px_hsl(var(--accent)/0.3)]'
+                : 'bg-muted text-muted-foreground'
                 }`}
             >
               <Icon size={24} />

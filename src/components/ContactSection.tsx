@@ -132,35 +132,64 @@ const ContactSection = () => {
           </motion.div>
 
           <motion.div
-            className="hidden lg:flex flex-col justify-center"
+            className="hidden lg:grid grid-cols-2 gap-4 xl:gap-5 place-content-center h-full"
             initial={{ opacity: 0, x: 40 }}
             animate={isInView ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 0.9, delay: 0.3 }}
           >
-            <div className="relative">
-              <span className="absolute -top-12 -left-6 font-heading text-[10rem] text-accent/10 leading-none select-none pointer-events-none">
-                "
-              </span>
-              <blockquote className="relative z-10 pl-2">
-                <p className="font-heading text-3xl md:text-4xl xl:text-5xl text-foreground/80 leading-snug italic">
-                  Every great project starts with a conversation.
-                </p>
-                <footer className="mt-6 font-mono text-sm text-muted-foreground tracking-wider uppercase">
-                  - Opera Creatives
-                </footer>
-              </blockquote>
-            </div>
+            {/* Email Box */}
+            <a
+              href="mailto:hello@operacreatives.com"
+              className="group relative flex flex-col justify-end p-6 xl:p-8 h-40 xl:h-52 bg-[#0A0A0A] hover:bg-[#111111] rounded-3xl overflow-hidden transition-all duration-500 border border-white/[0.03] hover:border-white/[0.08]"
+            >
+              <div className="absolute inset-0 bg-gradient-to-t from-black/90 to-transparent pointer-events-none opacity-50" />
+              <div className="relative z-10 flex flex-col gap-2">
+                <span className="font-heading text-2xl xl:text-4xl text-white group-hover:text-accent transition-colors duration-500 leading-none">Email</span>
+                <span className="font-mono text-[9px] xl:text-[10px] tracking-widest text-muted-foreground uppercase opacity-70 break-all line-clamp-1">hello@operacreatives.com</span>
+              </div>
+            </a>
 
-            <div className="mt-16 space-y-4 border-t border-border/30 pt-8">
-              <div>
-                <span className="font-mono text-[10px] tracking-[0.2em] text-muted-foreground uppercase">Email</span>
-                <p className="text-foreground mt-1">hello@operacreatives.com</p>
+            {/* Instagram Box */}
+            <a
+              href="https://instagram.com/operacreatives"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group relative flex flex-col justify-end p-6 xl:p-8 h-40 xl:h-52 bg-[#0A0A0A] hover:bg-[#111111] rounded-3xl overflow-hidden transition-all duration-500 border border-white/[0.03] hover:border-white/[0.08]"
+            >
+              <div className="absolute inset-0 bg-gradient-to-t from-black/90 to-transparent pointer-events-none opacity-50" />
+              <div className="relative z-10 flex flex-col gap-2">
+                <span className="font-heading text-2xl xl:text-4xl text-white group-hover:text-pink-500 transition-colors duration-500 leading-none">Instagram</span>
+                <span className="font-mono text-[9px] xl:text-[10px] tracking-widest text-muted-foreground uppercase opacity-70">@operacreatives</span>
               </div>
-              <div>
-                <span className="font-mono text-[10px] tracking-[0.2em] text-muted-foreground uppercase">Response Time</span>
-                <p className="text-foreground mt-1">Within 24 hours</p>
+            </a>
+
+            {/* LinkedIn Box */}
+            <a
+              href="https://linkedin.com/company/operacreatives"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group relative flex flex-col justify-end p-6 xl:p-8 h-40 xl:h-52 bg-[#0A0A0A] hover:bg-[#111111] rounded-3xl overflow-hidden transition-all duration-500 border border-white/[0.03] hover:border-white/[0.08]"
+            >
+              <div className="absolute inset-0 bg-gradient-to-t from-black/90 to-transparent pointer-events-none opacity-50" />
+              <div className="relative z-10 flex flex-col gap-2">
+                <span className="font-heading text-2xl xl:text-4xl text-white group-hover:text-blue-500 transition-colors duration-500 leading-none">LinkedIn</span>
+                <span className="font-mono text-[9px] xl:text-[10px] tracking-widest text-muted-foreground uppercase opacity-70">@operacreatives</span>
               </div>
-            </div>
+            </a>
+
+            {/* Twitter Box */}
+            <a
+              href="https://twitter.com/operacreatives"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group relative flex flex-col justify-end p-6 xl:p-8 h-40 xl:h-52 bg-[#0A0A0A] hover:bg-[#111111] rounded-3xl overflow-hidden transition-all duration-500 border border-white/[0.03] hover:border-white/[0.08]"
+            >
+              <div className="absolute inset-0 bg-gradient-to-t from-black/90 to-transparent pointer-events-none opacity-50" />
+              <div className="relative z-10 flex flex-col gap-2">
+                <span className="font-heading text-2xl xl:text-4xl text-white group-hover:text-neutral-300 transition-colors duration-500 leading-none">Twitter</span>
+                <span className="font-mono text-[9px] xl:text-[10px] tracking-widest text-muted-foreground uppercase opacity-70">@operacreatives</span>
+              </div>
+            </a>
           </motion.div>
         </div>
       </div>
