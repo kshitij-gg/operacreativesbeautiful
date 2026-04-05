@@ -45,22 +45,22 @@ const Footer = () => {
 
           <div className="flex items-center gap-3">
             <MagneticButton strength={25}>
-              <a href="#" className="p-2 rounded-full hover:bg-accent/10 hover:text-accent transition-all duration-300" aria-label="Instagram">
+              <a href="https://instagram.com/operacreatives_" target="_blank" rel="noopener noreferrer" className="p-2 rounded-full hover:bg-accent/10 hover:text-accent transition-all duration-300" aria-label="Instagram">
                 <Instagram size={18} />
               </a>
             </MagneticButton>
             <MagneticButton strength={25}>
-              <a href="#" className="p-2 rounded-full hover:bg-accent/10 hover:text-accent transition-all duration-300" aria-label="LinkedIn">
+              <a href="https://www.linkedin.com/company/operacreatives" target="_blank" rel="noopener noreferrer" className="p-2 rounded-full hover:bg-accent/10 hover:text-accent transition-all duration-300" aria-label="LinkedIn">
                 <Linkedin size={18} />
               </a>
             </MagneticButton>
             <MagneticButton strength={25}>
-              <a href="#" className="p-2 rounded-full hover:bg-accent/10 hover:text-accent transition-all duration-300" aria-label="X (Twitter)">
+              <a href="https://twitter.com/operacreatives_" target="_blank" rel="noopener noreferrer" className="p-2 rounded-full hover:bg-accent/10 hover:text-accent transition-all duration-300" aria-label="X (Twitter)">
                 <Twitter size={18} />
               </a>
             </MagneticButton>
             <MagneticButton strength={25}>
-              <a href="#" className="p-2 rounded-full hover:bg-accent/10 hover:text-accent transition-all duration-300" aria-label="YouTube">
+              <a href="https://youtube.com/@operacreatives" target="_blank" rel="noopener noreferrer" className="p-2 rounded-full hover:bg-accent/10 hover:text-accent transition-all duration-300" aria-label="YouTube">
                 <Youtube size={18} />
               </a>
             </MagneticButton>

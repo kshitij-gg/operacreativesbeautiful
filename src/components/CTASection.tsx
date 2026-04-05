@@ -35,54 +35,7 @@ const CTASection = () => {
       <div className="absolute inset-0 bg-background" />
       <div className="absolute inset-0 grain-overlay opacity-30 pointer-events-none" />
 
-      {/* ── 1. ORBIT RINGS — Rotating ellipses that orbit the CTA ── */}
-      <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-        <motion.div
-          className="absolute w-[50vw] h-[50vw] max-w-[600px] max-h-[600px] border border-foreground/[0.04] rounded-full"
-          style={{ rotate: ringRotate }}
-        />
-        <motion.div
-          className="absolute w-[65vw] h-[65vw] max-w-[800px] max-h-[800px] border border-dashed border-foreground/[0.03] rounded-full"
-          style={{ rotate: ring2Rotate }}
-        >
-          {/* Orbiting dot */}
-          <motion.div
-            className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-3 h-3 rounded-full bg-accent/40 shadow-[0_0_12px_hsl(var(--accent)/0.4)]"
-          />
-        </motion.div>
-        <motion.div
-          className="absolute w-[80vw] h-[80vw] max-w-[1000px] max-h-[1000px] border border-foreground/[0.02] rounded-full"
-          style={{ rotate: ringRotate }}
-        >
-          <motion.div
-            className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-1/2 w-2 h-2 rounded-full bg-violet-400/30"
-          />
-        </motion.div>
-      </div>
 
-      {/* ── 2. PARTICLE DOT FIELD — Subtle animated dots scattered in background ── */}
-      <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        {[...Array(20)].map((_, i) => (
-          <motion.div
-            key={i}
-            className="absolute w-1 h-1 rounded-full bg-foreground/10"
-            style={{
-              left: `${10 + (i * 4.3) % 80}%`,
-              top: `${5 + (i * 7.1) % 90}%`,
-            }}
-            animate={{
-              y: [0, (i % 2 === 0 ? -15 : 15), 0],
-              opacity: [0.1, 0.4, 0.1],
-            }}
-            transition={{
-              duration: 3 + (i % 3),
-              repeat: Infinity,
-              delay: i * 0.3,
-              ease: 'easeInOut',
-            }}
-          />
-        ))}
-      </div>
 
       {/* ── 3. RADIAL GLOW — Pulsing light behind the main text ── */}
       <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
@@ -109,22 +62,13 @@ const CTASection = () => {
         {/* ── 4. CAPABILITY ORBIT — 5 floating skill pills that fan out ── */}
         <div className="flex flex-wrap items-center justify-center gap-3 mb-10">
           {capabilities.map((cap, i) => (
-            <motion.div
+            <div
               key={i}
-              initial={{ opacity: 0, y: 20, scale: 0.8 }}
-              animate={isInView ? { opacity: 1, y: 0, scale: 1 } : {}}
-              transition={{
-                delay: 0.1 + i * 0.08,
-                type: 'spring',
-                stiffness: 300,
-                damping: 20,
-              }}
-              whileHover={{ y: -4, scale: 1.05 }}
               className="flex items-center gap-2 px-4 py-2 rounded-full bg-foreground/[0.04] border border-foreground/10 backdrop-blur-sm cursor-default"
             >
               <span className={cap.color}>{cap.icon}</span>
               <span className="font-mono text-xs tracking-wide text-foreground/60">{cap.label}</span>
-            </motion.div>
+            </div>
           ))}
         </div>
 

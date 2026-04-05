@@ -1,24 +1,24 @@
-import CustomCursor from '@/components/CustomCursor';
+import { lazy, Suspense, useEffect } from 'react';
 import Navbar from '@/components/Navbar';
 import HeroSection from '@/components/HeroSection';
-import AboutSection from '@/components/AboutSection';
-import PortfolioSection from '@/components/PortfolioSection';
-import BehindTheScenesSection from '@/components/BehindTheScenesSection';
-import ToolsSection from '@/components/ToolsSection';
-import LiquidDivider from '@/components/LiquidDivider';
-
-
-import CTASection from '@/components/CTASection';
-import ContactSection from '@/components/ContactSection';
-import Footer from '@/components/Footer';
 import SmoothScroll from '@/components/SmoothScroll';
 import FilmGrain from '@/components/FilmGrain';
 import FerrofluidBackground from '@/components/FerrofluidBackground';
-import MarqueeBanner from '@/components/MarqueeBanner';
-import SectionCurtain from '@/components/SectionCurtain';
 import { motion, useScroll, useSpring } from 'framer-motion';
-import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
+
+// Core App Loads Instantly
+// Everything Below the Fold Lazy Loads:
+const AboutSection = lazy(() => import('@/components/AboutSection'));
+const PortfolioSection = lazy(() => import('@/components/PortfolioSection'));
+const BehindTheScenesSection = lazy(() => import('@/components/BehindTheScenesSection'));
+const ToolsSection = lazy(() => import('@/components/ToolsSection'));
+const LiquidDivider = lazy(() => import('@/components/LiquidDivider'));
+const CTASection = lazy(() => import('@/components/CTASection'));
+const ContactSection = lazy(() => import('@/components/ContactSection'));
+const Footer = lazy(() => import('@/components/Footer'));
+const MarqueeBanner = lazy(() => import('@/components/MarqueeBanner'));
+const SectionCurtain = lazy(() => import('@/components/SectionCurtain'));
 
 const Index = () => {
   const { scrollYProgress } = useScroll();
@@ -52,59 +52,61 @@ const Index = () => {
           style={{ scaleX, boxShadow: '0 0 8px hsl(var(--accent) / 0.5)' }}
         />
         <FilmGrain />
-        <CustomCursor />
+
         <Navbar />
 
-        <main className="relative">
+        <main className="relative z-10">
           <HeroSection />
 
+          <Suspense fallback={<div className="h-40 w-full" />}>
             <div className="relative z-10 bg-background/80 backdrop-blur-3xl rounded-t-3xl shadow-[0_-20px_60px_-15px_rgba(0,0,0,0.3)]">
-            <LiquidDivider color="accent" />
+              <LiquidDivider color="accent" />
 
-            <MarqueeBanner
-              text="AI FILMS ★ COMMERCIALS ★ VISUAL CAMPAIGNS ★ MOTION DESIGN ★ CREATIVE DIRECTION ★ "
-              speed={35}
-              className="border-y border-foreground/5"
-            />
+              <MarqueeBanner
+                text="AI FILMS ★ COMMERCIALS ★ VISUAL CAMPAIGNS ★ MOTION DESIGN ★ CREATIVE DIRECTION ★ "
+                speed={35}
+                className="border-y border-foreground/5"
+              />
 
-            {/* About Section — wrapped in curtain reveal */}
-            <SectionCurtain>
-              <AboutSection />
-            </SectionCurtain>
+              {/* About Section — wrapped in curtain reveal */}
+              <SectionCurtain>
+                <AboutSection />
+              </SectionCurtain>
 
-            <LiquidDivider color="purple" />
+              <LiquidDivider color="purple" />
 
-            <MarqueeBanner
-              text="CONCEPT ★ STORYBOARD ★ AI PRODUCTION ★ POST-PRODUCTION ★ VFX ★ COLOR GRADING ★ "
-              speed={40}
-              reverse={true}
-              className="border-y border-foreground/5 opacity-50"
-            />
+              <MarqueeBanner
+                text="CONCEPT ★ STORYBOARD ★ AI PRODUCTION ★ POST-PRODUCTION ★ VFX ★ COLOR GRADING ★ "
+                speed={40}
+                reverse={true}
+                className="border-y border-foreground/5 opacity-50"
+              />
 
+              <PortfolioSection />
 
+              <LiquidDivider color="cyan" />
 
-            <PortfolioSection />
+              {/* BTS Section — wrapped in curtain reveal */}
+              <SectionCurtain>
+                <BehindTheScenesSection />
+              </SectionCurtain>
 
-            <LiquidDivider color="cyan" />
+              <ToolsSection />
 
-            {/* BTS Section — wrapped in curtain reveal */}
-            <SectionCurtain>
-              <BehindTheScenesSection />
-            </SectionCurtain>
+              <LiquidDivider color="purple" />
 
-            <ToolsSection />
+              <CTASection />
 
-            <LiquidDivider color="purple" />
+              <LiquidDivider color="accent" />
 
-            <CTASection />
-
-            <LiquidDivider color="accent" />
-
-            <ContactSection />
-          </div>
+              <ContactSection />
+            </div>
+          </Suspense>
         </main>
 
-        <Footer />
+        <Suspense fallback={null}>
+          <Footer />
+        </Suspense>
       </div>
     </SmoothScroll>
   );

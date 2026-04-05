@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState, useMemo } from 'react';
 import { motion, useScroll, useTransform, useInView, AnimatePresence, LayoutGroup, useSpring } from 'framer-motion';
-import CustomCursor from '@/components/CustomCursor';
+
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import GlitchImage from '@/components/GlitchImage';
@@ -276,7 +276,7 @@ const VerticalProjectBlock = ({
       onClick={onClick}
       initial={shouldAnimateVertical ? { opacity: 0, y: -900, scale: 0.9 } : { opacity: 1, y: 0, scale: 1 }}
       animate={{ opacity: 1, y: 0, scale: 1 }}
-      transition={shouldAnimateVertical ? { 
+      transition={shouldAnimateVertical ? {
         y: { type: "spring", stiffness: 100, damping: 14, mass: 1.2, delay: delay },
         opacity: { duration: 0.6, delay: delay }
       } : { duration: 0 }}
@@ -665,7 +665,7 @@ const MoreWork = () => {
 
   return (
     <div className="min-h-screen bg-black text-white selection:bg-primary selection:text-black">
-      <CustomCursor />
+
       <Navbar />
 
       <main className="pt-24 sm:pt-32 pb-0">

@@ -92,27 +92,7 @@ const BehindTheScenesSection = () => {
         }}
       />
 
-      {/* Floating geometric shapes */}
-      <motion.div
-        className="absolute top-[15%] left-[8%] w-4 h-4 border border-accent/20 rotate-45 pointer-events-none"
-        animate={{ rotate: [45, 135, 225, 315, 405], opacity: [0.2, 0.5, 0.2] }}
-        transition={{ duration: 12, repeat: Infinity, ease: 'linear' }}
-      />
-      <motion.div
-        className="absolute top-[40%] right-[12%] w-3 h-3 bg-accent/10 rounded-full pointer-events-none"
-        animate={{ y: [0, -20, 0], scale: [1, 1.5, 1] }}
-        transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut' }}
-      />
-      <motion.div
-        className="absolute bottom-[25%] right-[25%] w-6 h-6 border border-purple-500/15 rounded-full pointer-events-none"
-        animate={{ scale: [1, 1.8, 1], opacity: [0.15, 0.4, 0.15] }}
-        transition={{ duration: 7, repeat: Infinity, ease: 'easeInOut' }}
-      />
-      <motion.div
-        className="absolute top-[60%] left-[20%] w-2 h-8 bg-gradient-to-b from-accent/20 to-transparent rounded-full pointer-events-none"
-        animate={{ y: [0, 15, 0], opacity: [0.2, 0.5, 0.2] }}
-        transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut', delay: 1 }}
-      />
+
 
       {/* Dot grid texture */}
       <div

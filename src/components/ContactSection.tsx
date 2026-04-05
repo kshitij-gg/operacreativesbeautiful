@@ -151,7 +151,7 @@ const ContactSection = () => {
 
             {/* Instagram Box */}
             <a
-              href="https://instagram.com/operacreatives"
+              href="https://instagram.com/operacreatives_"
               target="_blank"
               rel="noopener noreferrer"
               className="group relative flex flex-col justify-end p-6 xl:p-8 h-40 xl:h-52 bg-[#0A0A0A] hover:bg-[#111111] rounded-3xl overflow-hidden transition-all duration-500 border border-white/[0.03] hover:border-white/[0.08]"
@@ -159,7 +159,7 @@ const ContactSection = () => {
               <div className="absolute inset-0 bg-gradient-to-t from-black/90 to-transparent pointer-events-none opacity-50" />
               <div className="relative z-10 flex flex-col gap-2">
                 <span className="font-heading text-2xl xl:text-4xl text-white group-hover:text-pink-500 transition-colors duration-500 leading-none">Instagram</span>
-                <span className="font-mono text-[9px] xl:text-[10px] tracking-widest text-muted-foreground uppercase opacity-70">@operacreatives</span>
+                <span className="font-mono text-[9px] xl:text-[10px] tracking-widest text-muted-foreground uppercase opacity-70">@operacreatives_</span>
               </div>
             </a>
 
@@ -179,7 +179,7 @@ const ContactSection = () => {
 
             {/* Twitter Box */}
             <a
-              href="https://twitter.com/operacreatives"
+              href="https://twitter.com/operacreatives_"
               target="_blank"
               rel="noopener noreferrer"
               className="group relative flex flex-col justify-end p-6 xl:p-8 h-40 xl:h-52 bg-[#0A0A0A] hover:bg-[#111111] rounded-3xl overflow-hidden transition-all duration-500 border border-white/[0.03] hover:border-white/[0.08]"
@@ -187,6 +187,20 @@ const ContactSection = () => {
               <div className="absolute inset-0 bg-gradient-to-t from-black/90 to-transparent pointer-events-none opacity-50" />
               <div className="relative z-10 flex flex-col gap-2">
                 <span className="font-heading text-2xl xl:text-4xl text-white group-hover:text-neutral-300 transition-colors duration-500 leading-none">Twitter</span>
+                <span className="font-mono text-[9px] xl:text-[10px] tracking-widest text-muted-foreground uppercase opacity-70">@operacreatives_</span>
+              </div>
+            </a>
+
+            {/* YouTube Box */}
+            <a
+              href="https://youtube.com/@operacreatives"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group relative flex flex-col justify-end p-6 xl:p-8 h-40 xl:h-52 bg-[#0A0A0A] hover:bg-[#111111] rounded-3xl overflow-hidden transition-all duration-500 border border-white/[0.03] hover:border-white/[0.08] col-span-2"
+            >
+              <div className="absolute inset-0 bg-gradient-to-t from-black/90 to-transparent pointer-events-none opacity-50" />
+              <div className="relative z-10 flex flex-col gap-2">
+                <span className="font-heading text-2xl xl:text-4xl text-white group-hover:text-red-500 transition-colors duration-500 leading-none">YouTube</span>
                 <span className="font-mono text-[9px] xl:text-[10px] tracking-widest text-muted-foreground uppercase opacity-70">@operacreatives</span>
               </div>
             </a>

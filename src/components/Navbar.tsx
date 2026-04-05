@@ -62,7 +62,7 @@ const Navbar = () => {
   return (
     <nav
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isVisible ? 'translate-y-0' : '-translate-y-full'
-        } ${isMobileMenuOpen ? 'bg-background/95 backdrop-blur-md text-foreground' : isDifferenceMode ? 'bg-transparent mix-blend-difference text-white' : 'bg-transparent text-foreground'
+        } ${isMobileMenuOpen ? 'bg-background/95 backdrop-blur-md text-foreground' : isDifferenceMode ? 'bg-transparent text-white' : 'bg-transparent text-foreground'
         }`}
     >
       <div className="container mx-auto px-4 sm:px-6 lg:px-12">
