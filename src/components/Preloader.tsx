@@ -22,7 +22,7 @@ const CarSilhouette = ({ isExiting }: { isExiting?: boolean }) => (
             <g style={{ transformOrigin: '150px 110px' }} className="animate-[spin_0.08s_linear_infinite]">
                 <circle cx="150" cy="110" r="30" fill="#050505" stroke="#fff" strokeWidth="3" />
                 <circle cx="150" cy="110" r="8" fill="#eb5a31" className="drop-shadow-[0_0_8px_rgba(235,90,49,1)]" />
-                <line x1="150" y1="80" x2="150" y2="140" stroke="#fff" strokeWidth="2" />
+                <line x1="150" y1="80" x2="150" y2="140" stroke="#ffffffff" strokeWidth="2" />
                 <line x1="120" y1="110" x2="180" y2="110" stroke="#fff" strokeWidth="2" />
                 <line x1="128" y1="88" x2="172" y2="132" stroke="#fff" strokeWidth="2" />
                 <line x1="128" y1="132" x2="172" y2="88" stroke="#fff" strokeWidth="2" />

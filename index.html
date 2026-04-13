@@ -2,13 +2,23 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,500&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
+
+    <!-- Vimeo CDN preconnect — tells browser to open connections BEFORE React loads -->
+    <link rel="preconnect" href="https://player.vimeo.com" />
+    <link rel="preconnect" href="https://f.vimeocdn.com" crossorigin />
+    <link rel="preconnect" href="https://i.vimeocdn.com" crossorigin />
+    <link rel="preconnect" href="https://fresnel.vimeocdn.com" crossorigin />
+    <link rel="dns-prefetch" href="https://player.vimeo.com" />
+    <link rel="dns-prefetch" href="https://f.vimeocdn.com" />
+    <link rel="dns-prefetch" href="https://i.vimeocdn.com" />
     <title>Opera Creatives | AI Film Production Studio</title>
     <meta
       name="description"
-      content="Opera Creatives builds cinematic AI commercials, film visuals, motion campaigns, and immersive brand experiences."
+      content="Opera Creatives builds cinematic AI commercials, film visuals, motion campaigns, and immersive brand experiences. AI-produced. Cinema-grade. Delivered at startup speed."
     />
     <meta name="author" content="Opera Creatives" />
 
@@ -38,6 +48,21 @@
   </head>
 
   <body>
+    <!--
+      VIMEO WARMUP: A zero-size hidden iframe that fires the Vimeo player
+      connection immediately on HTML parse — before any JS runs.
+      This pre-warms TCP, TLS, CDN routing so the real background iframe
+      in React loads nearly instantly.
+    -->
+    <iframe
+      src="https://player.vimeo.com/video/1153960232?background=1&autoplay=0&loop=1&muted=1"
+      width="1" height="1"
+      style="position:absolute;top:-9999px;left:-9999px;opacity:0;pointer-events:none;"
+      frameborder="0"
+      allow="autoplay"
+      aria-hidden="true"
+      tabindex="-1"
+    ></iframe>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>

@@ -1,153 +1,114 @@
-import { useState, useEffect, useRef } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
-import { Menu, X } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import MagneticButton from '@/components/MagneticButton';
-import { motion, useScroll, useTransform } from 'framer-motion';
+import { useEffect, useState } from 'react';
+import { motion, useScroll, useMotionValueEvent } from 'framer-motion';
+
+// Musical note icon — for ABOUT link
+const NoteIcon = () => (
+  <svg className="nav-icon" width="14" height="14" viewBox="0 0 14 14" fill="none">
+    <ellipse cx="4" cy="11" rx="2.5" ry="1.8" stroke="currentColor" strokeWidth="1.2"/>
+    <line x1="6.5" y1="11" x2="6.5" y2="3" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round"/>
+    <path d="M6.5 3L12 4.5L12 7.5L6.5 6Z" stroke="currentColor" strokeWidth="1" fill="none"/>
+  </svg>
+);
+
+// Film strip icon — for WORK link
+const FilmIcon = () => (
+  <svg className="nav-icon" width="14" height="14" viewBox="0 0 14 14" fill="none">
+    <rect x="1" y="3" width="12" height="8" rx="1.5" stroke="currentColor" strokeWidth="1.2"/>
+    <rect x="1" y="3" width="2.5" height="2.5" rx="0.4" fill="currentColor"/>
+    <rect x="1" y="7.5" width="2.5" height="2.5" rx="0.4" fill="currentColor"/>
+    <rect x="10.5" y="3" width="2.5" height="2.5" rx="0.4" fill="currentColor"/>
+    <rect x="10.5" y="7.5" width="2.5" height="2.5" rx="0.4" fill="currentColor"/>
+    <rect x="5" y="4.5" width="4" height="5" rx="0.8" stroke="currentColor" strokeWidth="1"/>
+  </svg>
+);
+
+// Violin bow — for CONTACT button
+const BowIcon = ({ strumming }: { strumming: boolean }) => (
+  <svg
+    width="20" height="20" viewBox="0 0 20 20" fill="none"
+    style={strumming ? { animation: 'bowStrum 0.5s ease' } : {}}
+  >
+    <path d="M3 16C7 13 13 9 17 4" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round"/>
+    <path d="M3 17.5C7 14.5 13 10.5 17 5.5" stroke="currentColor" strokeWidth="0.8" strokeLinecap="round" opacity="0.45"/>
+    <rect x="1" y="14" width="4" height="4" rx="1" fill="currentColor" opacity="0.75"/>
+    <line x1="5" y1="14" x2="5" y2="18" stroke="currentColor" strokeWidth="0.8" opacity="0.5"/>
+  </svg>
+);
+
+const LIGHT_SECTIONS = new Set([3, 4, 5, 6]);
 
 const Navbar = () => {
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [isScrolled, setIsScrolled] = useState(false);
-  const [isPastHero, setIsPastHero] = useState(false);
-  const [isVisible, setIsVisible] = useState(true);
-  const lastScrollY = useRef(0);
-  const location = useLocation();
-  const navigate = useNavigate();
+  const { scrollY } = useScroll();
+  const [scrolled, setScrolled]   = useState(false);
+  const [isDark, setIsDark]       = useState(false);
+  const [strumming, setStrumming] = useState(false);
 
-
+  useMotionValueEvent(scrollY, 'change', (v) => setScrolled(v > 60));
 
   useEffect(() => {
-    const handleScroll = () => {
-      const currentScrollY = window.scrollY;
-      setIsScrolled(currentScrollY > 50);
-      setIsPastHero(currentScrollY > window.innerHeight - 80);
-
-      if (currentScrollY > lastScrollY.current && currentScrollY > 100) {
-        setIsVisible(false);
-      } else {
-        setIsVisible(true);
-      }
-      lastScrollY.current = currentScrollY;
-    };
-
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
+    const sections = document.querySelectorAll('[data-section]');
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => {
+          if (e.isIntersecting) {
+            const idx = Number((e.target as HTMLElement).dataset.section ?? 0);
+            setIsDark(LIGHT_SECTIONS.has(idx));
+          }
+        });
+      },
+      { threshold: 0.3 }
+    );
+    sections.forEach((el) => observer.observe(el));
+    return () => observer.disconnect();
   }, []);
 
-  // Smart navigation: if on home page, scroll. Otherwise, navigate home then scroll.
-  const goToSection = (id: string) => {
-    setIsMobileMenuOpen(false);
-    if (location.pathname === '/') {
-      const element = document.getElementById(id);
-      if (element) {
-        element.scrollIntoView({ behavior: 'smooth' });
-      }
-    } else {
-      navigate('/', { state: { scrollTo: id } });
-    }
-  };
-
-  // Go home (logo click)
-  const goHome = () => {
-    setIsMobileMenuOpen(false);
-    if (location.pathname === '/') {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    } else {
-      navigate('/');
-    }
-  };
-
-  const isDifferenceMode = isPastHero && !isMobileMenuOpen;
+  const textColor = isDark ? 'rgba(17,17,17,0.85)' : 'rgba(255,255,255,0.85)';
+  const hoverColor = isDark ? '#111' : '#fff';
+  const borderColor = isDark ? 'rgba(17,17,17,0.3)' : 'rgba(255,255,255,0.4)';
 
   return (
-    <nav
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isVisible ? 'translate-y-0' : '-translate-y-full'
-        } ${isMobileMenuOpen ? 'bg-background/95 backdrop-blur-md text-foreground' : isDifferenceMode ? 'bg-transparent text-white' : 'bg-transparent text-foreground'
-        }`}
+    <motion.nav
+      className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-6 sm:px-10 h-20"
+      style={{
+        backdropFilter: scrolled ? 'blur(16px) saturate(180%)' : 'none',
+        backgroundColor: scrolled ? (isDark ? 'rgba(255,255,255,0.88)' : 'rgba(0,0,0,0.55)') : 'transparent',
+        borderBottom: scrolled ? `1px solid ${borderColor}` : '1px solid transparent',
+        transition: 'background-color 0.4s ease, border-color 0.4s ease',
+      }}
     >
-      <div className="w-full px-6 sm:px-10 lg:px-16 xl:px-20">
-        <div className="flex items-center justify-between h-16 sm:h-24">
-          {/* Logo */}
-          <a
-            href="#"
-            onClick={(e) => { e.preventDefault(); goHome(); }}
-            className="group relative text-lg sm:text-[40px] tracking-wide uppercase leading-none cursor-pointer"
-            style={{
-              fontFamily: "'Anton', sans-serif",
-            }}
-          >
-            OPERA CREATIVES
-          </a>
+      {/* Wordmark Button — scrolls to top, never reloads (avoids re-triggering intro) */}
+      <button
+        onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+        className="btn-3d inline-flex items-center justify-center font-heading text-[26px] sm:text-[28px] tracking-[0.08em] leading-none rounded px-6 py-2"
+        style={{ color: '#fff', backgroundColor: '#4A0E17', border: '1px solid rgba(255,255,255,0.1)', cursor: 'pointer' }}
+        aria-label="Back to top"
+      >
+        OPERA CREATIVES
+      </button>
 
-          {/* Desktop Navigation - Center */}
-          <div className="hidden md:flex items-center gap-14">
-            <MagneticButton strength={15}>
-              <button
-                onClick={() => goToSection('about')}
-                className="text-[15px] font-medium opacity-80 hover:opacity-100 transition-opacity uppercase tracking-[0.18em] py-2"
-              >
-                About
-              </button>
-            </MagneticButton>
-            <MagneticButton strength={15}>
-              <button
-                onClick={() => { setIsMobileMenuOpen(false); navigate('/more-work'); }}
-                className="text-[15px] font-medium opacity-80 hover:opacity-100 transition-opacity uppercase tracking-[0.18em] py-2"
-              >
-                Work
-              </button>
-            </MagneticButton>
-          </div>
+      {/* Nav links with 3D Buttons */}
+      <div className="hidden md:flex items-center gap-4">
+        <a href="#about"
+           className="btn-3d btn-3d-pearl inline-flex items-center justify-center font-mono text-[13px] tracking-[0.1em] font-bold uppercase rounded px-5 py-2.5"
+           style={{ textDecoration: 'none', border: '1px solid rgba(255,255,255,0.2)' }}>
+          ABOUT
+        </a>
+        <a href="#portfolio"
+           className="btn-3d btn-3d-black inline-flex items-center justify-center font-mono text-[13px] tracking-[0.1em] font-bold uppercase rounded px-5 py-2.5"
+           style={{ textDecoration: 'none', border: '1px solid rgba(255,255,255,0.1)' }}>
+          WORK
+        </a>
 
-          {/* Right side - CTA */}
-          <div className="hidden md:flex items-center gap-3">
-            <MagneticButton>
-              <Button
-                onClick={() => goToSection('contact')}
-                className={`${isDifferenceMode ? '!bg-white hover:!bg-white/90 !text-black' : 'bg-foreground hover:bg-foreground/90 text-background'} rounded-full px-8 py-5 text-sm font-semibold tracking-wide transition-all duration-300 hover:scale-105`}
-              >
-                Contact Us
-              </Button>
-            </MagneticButton>
-          </div>
-
-          {/* Mobile Menu Button */}
-          <button
-            className="md:hidden p-2 opacity-80 hover:opacity-100 transition-opacity"
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            aria-label="Toggle menu"
-          >
-            {isMobileMenuOpen ? <X size={22} /> : <Menu size={22} />}
-          </button>
-        </div>
-
-        {/* Mobile Menu */}
-        {isMobileMenuOpen && (
-          <div className="md:hidden py-4 pb-6 animate-fade-up border-t border-border/20">
-            <div className="flex flex-col gap-4">
-              <button
-                onClick={() => goToSection('about')}
-                className="text-left text-sm font-medium text-foreground/80 hover:text-foreground transition-colors uppercase tracking-[0.12em] py-1"
-              >
-                About
-              </button>
-              <button
-                onClick={() => { setIsMobileMenuOpen(false); navigate('/more-work'); }}
-                className="text-left text-sm font-medium text-foreground/80 hover:text-foreground transition-colors uppercase tracking-[0.12em] py-1"
-              >
-                Work
-              </button>
-              <Button
-                onClick={() => goToSection('contact')}
-                className="mt-2 bg-foreground hover:bg-foreground/90 text-background w-full py-5 text-sm font-semibold rounded-full"
-              >
-                Contact Us
-              </Button>
-            </div>
-          </div>
-        )}
+        {/* CONTACT button */}
+        <a
+          href="#collaborate"
+          className="btn-3d btn-3d-red inline-flex items-center gap-2 rounded px-6 py-2.5 ml-2 font-mono text-[13px] tracking-[0.1em] font-bold uppercase cursor-pointer"
+          style={{ textDecoration: 'none', border: '1px solid rgba(255,255,255,0.1)' }}
+        >
+          CONTACT US
+        </a>
       </div>
-    </nav>
+    </motion.nav>
   );
 };
 

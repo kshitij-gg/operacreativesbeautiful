@@ -1,101 +1,98 @@
-import { lazy, Suspense, useEffect } from 'react';
+import { useEffect, Suspense, lazy } from 'react';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
 import Navbar from '@/components/Navbar';
 import HeroSection from '@/components/HeroSection';
-import SmoothScroll from '@/components/SmoothScroll';
-import FilmGrain from '@/components/FilmGrain';
-import FerrofluidBackground from '@/components/FerrofluidBackground';
-import { motion, useScroll, useSpring } from 'framer-motion';
-import { useLocation } from 'react-router-dom';
+import ScrollProgress from '@/components/ScrollProgress';
+import SectionIndicator from '@/components/SectionIndicator';
+import CustomCursor from '@/components/CustomCursor';
 
-// Core App Loads Instantly
-// Everything Below the Fold Lazy Loads:
-const AboutSection = lazy(() => import('@/components/AboutSection'));
+gsap.registerPlugin(ScrollTrigger);
+
+// Lazy-loaded below-fold sections
+const AboutSection     = lazy(() => import('@/components/AboutSection'));
+const WeBelieveSection = lazy(() => import('@/components/WeBelieveSection'));
 const PortfolioSection = lazy(() => import('@/components/PortfolioSection'));
-const BehindTheScenesSection = lazy(() => import('@/components/BehindTheScenesSection'));
-const CTASection = lazy(() => import('@/components/CTASection'));
-const ContactSection = lazy(() => import('@/components/ContactSection'));
-const Footer = lazy(() => import('@/components/Footer'));
-const MarqueeBanner = lazy(() => import('@/components/MarqueeBanner'));
-const SectionCurtain = lazy(() => import('@/components/SectionCurtain'));
+const StaticAdsSection = lazy(() => import('@/components/StaticAdsSection'));
+const HowWeCreate      = lazy(() => import('@/components/HowWeCreateSection'));
+const CollaborateSection = lazy(() => import('@/components/CollaborateSection'));
+const Footer           = lazy(() => import('@/components/Footer'));
+
+// ─── THE OPERA COLOR JOURNEY ──────────────────────────────────
+// Note: WeBelieveSection handles its own GSAP sub-scroll internally (color wheel scrub).
+// The outer GSAP triggers here handle the "between section" color jumps.
+const SECTION_BG: Record<string, string> = {
+  '0':  '#000000',   // Hero
+  '1':  '#FF4B6E',   // Who We Are
+  '2':  '#FF6B8A',   // We Believe entrance (scrub handles the rest internally)
+  '3':  '#FFFFFF',   // Our Work
+  '4':  '#FFFFFF',   // Process (inherits white from Our Work)
+  '5':  '#C0152A',   // Collaborate — deep theatre red
+  '6':  '#F5F0E8',   // Footer
+};
+
+const Fallback = () => (
+  <div className="min-h-[40vh] flex items-center justify-center">
+    <span className="font-mono text-[10px] tracking-widest animate-pulse uppercase text-white/30">Loading…</span>
+  </div>
+);
 
 const Index = () => {
-  const { scrollYProgress } = useScroll();
-  const scaleX = useSpring(scrollYProgress, {
-    stiffness: 100,
-    damping: 30,
-    restDelta: 0.001
-  });
-
-  // Handle cross-page navigation from /more-work
-  const location = useLocation();
   useEffect(() => {
-    const state = location.state as { scrollTo?: string } | null;
-    if (state?.scrollTo) {
-      setTimeout(() => {
-        const el = document.getElementById(state.scrollTo!);
-        if (el) el.scrollIntoView({ behavior: 'smooth' });
-      }, 100);
-      window.history.replaceState({}, document.title);
-    }
-  }, [location.state]);
+    // Set initial bg
+    document.body.style.backgroundColor = '#000000';
+
+    // Wait until sections are mounted before wiring ScrollTrigger
+    // Set initial bg globally but let sections define their own local backgrounds
+    document.body.style.backgroundColor = '#000000';
+    return () => {
+      ScrollTrigger.getAll().forEach(t => t.kill());
+    };
+  }, []);
 
   return (
-    <SmoothScroll>
-      <div className="min-h-screen bg-transparent relative">
-        <FerrofluidBackground />
-        
-        {/* ── Global Overlays ── */}
-        <motion.div
-          className="fixed top-0 left-0 right-0 h-[1px] bg-accent origin-left z-[9998] rounded-r-full"
-          style={{ scaleX, boxShadow: '0 0 8px hsl(var(--accent) / 0.5)' }}
-        />
-        <FilmGrain />
+    <>
+      {/* Global chrome */}
+      <ScrollProgress />
+      <Navbar />
+      <SectionIndicator />
+      <CustomCursor />
 
-        <Navbar />
+      {/* ── THE OPERA — 7 ACTS ────────────────────────────────── */}
+      <main>
 
-        <main className="relative z-10">
-          <HeroSection />
+        <Suspense fallback={<Fallback />}>
+          {/* Group 1: Hero and About (Parallax Curtain Mask Setup) */}
+          <div className="relative">
+            {/* ACT 1 — HERO with embedded showreel */}
+            <HeroSection />
+            
+            {/* ACT 2 — WHO WE ARE — crimson red #FF4B6E */}
+            <AboutSection />
+          </div>
 
-          <Suspense fallback={<div className="h-40 w-full" />}>
-            <div className="relative z-10 bg-background/80 backdrop-blur-3xl rounded-t-3xl shadow-[0_-20px_60px_-15px_rgba(0,0,0,0.3)]">
+          {/* ACT 3 — WE BELIEVE — sub-scroll sky blue → mint → yellow */}
+          <WeBelieveSection />
 
-              <MarqueeBanner
-                text="AI FILMS ★ COMMERCIALS ★ VISUAL CAMPAIGNS ★ MOTION DESIGN ★ CREATIVE DIRECTION ★ "
-                speed={35}
-                className="border-y border-foreground/5"
-              />
+          {/* ACT 4 — OUR WORK — pure white */}
+          <PortfolioSection />
 
-              {/* About Section — wrapped in curtain reveal */}
-              <SectionCurtain>
-                <AboutSection />
-              </SectionCurtain>
+          {/* ACT 4b — STATIC ADS — floating portrait gallery */}
+          <StaticAdsSection />
 
-              <MarqueeBanner
-                text="CONCEPT ★ STORYBOARD ★ AI PRODUCTION ★ POST-PRODUCTION ★ VFX ★ COLOR GRADING ★ "
-                speed={40}
-                reverse={true}
-                className="border-y border-foreground/5 opacity-50"
-              />
+          {/* ACT 5 — HOW WE CREATE — tangerine #FFB347 */}
+          <HowWeCreate />
 
-              <PortfolioSection />
+          {/* ACT 6 — COLLABORATE — bright yellow #FFE066 */}
+          <CollaborateSection />
 
-              {/* BTS Section — wrapped in curtain reveal */}
-              <SectionCurtain>
-                <BehindTheScenesSection />
-              </SectionCurtain>
-
-              <CTASection />
-
-              <ContactSection />
-            </div>
-          </Suspense>
-        </main>
-
-        <Suspense fallback={null}>
+          {/* ACT 7 — FOOTER — warm cream #F5F0E8 */}
           <Footer />
+
         </Suspense>
-      </div>
-    </SmoothScroll>
+      </main>
+    </>
   );
 };
 
