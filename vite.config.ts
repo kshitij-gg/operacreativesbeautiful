@@ -17,4 +17,12 @@ export default defineConfig(({ mode }) => ({
       "@": path.resolve(__dirname, "./src"),
     },
   },
+  optimizeDeps: {
+    include: ["gsap", "gsap/ScrollTrigger"],
+  },
+  build: {
+    commonjsOptions: {
+      include: [/gsap/, /node_modules/],
+    },
+  },
 }));
