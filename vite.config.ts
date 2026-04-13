@@ -16,9 +16,9 @@ export default defineConfig(({ mode }) => ({
     alias: {
       "@": path.resolve(__dirname, "./src"),
     },
-    // Force Rollup to use package.json "main" field (dist/gsap.js) not the "exports" map
-    mainFields: ["browser", "module", "main"],
-    conditions: ["browser", "module", "import", "default"],
+    // gsap's package.json has "module": "index.js" which may not exist in the
+    // public npm version. Remove "module" so Rollup falls back to "main": "dist/gsap.js"
+    mainFields: ["browser", "main"],
   },
   optimizeDeps: {
     include: ["gsap", "gsap/ScrollTrigger"],
