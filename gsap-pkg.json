@@ -1,0 +1,29 @@
+{
+  "version": "3.14.2",
+  "main": "dist/gsap.js",
+  "module": "index.js",
+  "exports": {
+    ".": {
+      "import": "./index.js",
+      "require": "./dist/gsap.js",
+      "types": "./types/index.d.ts",
+      "default": "./index.js"
+    },
+    "./dist/*.js": "./dist/*.js",
+    "./dist/*": "./dist/*.js",
+    "./*.js": {
+      "import": "./*.js",
+      "require": "./dist/*.js",
+      "types": "./types/*.d.ts",
+      "default": "./*.js"
+    },
+    "./*": {
+      "import": "./*.js",
+      "require": "./dist/*.js",
+      "types": "./types/*.d.ts",
+      "default": "./*.js"
+    },
+    "./types/*": "./types/*",
+    "./package.json": "./package.json"
+  }
+}
